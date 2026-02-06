@@ -1,0 +1,15 @@
+{
+  "originHash" : "e27df6866c997198b1989913121f7d1691364e7f41d5ebc6db475080b0c66cc4",
+  "pins" : [
+    {
+      "identity" : "lan-scanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MaatheusGois/lan-scanner",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "b5d4cda7161efec0fa042670eaa9bb7aeeba5bee"
+      }
+    }
+  ],
+  "version" : 3
+}
