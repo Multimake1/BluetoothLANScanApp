@@ -21,8 +21,4 @@ final class AppState: ObservableObject {
             NetworkServicesFactory.shared.mode = .mock //если менять, то и в NetworkServiceFactory
         }
     }
-        
-    /*init() {
-        NetworkServicesFactory.shared.mode = .real
-    }*/
 }

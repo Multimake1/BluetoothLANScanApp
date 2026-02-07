@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7C97079B2F33EE4000586EBF /* LanScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 7C97079A2F33EE4000586EBF /* LanScanner */; };
+		7C9707D22F374BEC00586EBF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7C9707D12F374BEC00586EBF /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C97079B2F33EE4000586EBF /* LanScanner in Frameworks */,
+				7C9707D22F374BEC00586EBF /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +86,7 @@
 			name = BluetoothLANScan;
 			packageProductDependencies = (
 				7C97079A2F33EE4000586EBF /* LanScanner */,
+				7C9707D12F374BEC00586EBF /* Lottie */,
 			);
 			productName = BluetoothLANScan;
 			productReference = 7C9707672F33406200586EBF /* BluetoothLANScan.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				7C9707992F33EE4000586EBF /* XCRemoteSwiftPackageReference "lan-scanner" */,
+				7C9707D02F374BEC00586EBF /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7C9707682F33406200586EBF /* Products */;
@@ -370,6 +374,14 @@
 				kind = branch;
 			};
 		};
+		7C9707D02F374BEC00586EBF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -377,6 +389,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C9707992F33EE4000586EBF /* XCRemoteSwiftPackageReference "lan-scanner" */;
 			productName = LanScanner;
+		};
+		7C9707D12F374BEC00586EBF /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C9707D02F374BEC00586EBF /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

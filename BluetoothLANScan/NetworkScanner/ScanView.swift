@@ -19,84 +19,71 @@ struct NetworkScannerView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 16) {
-                StatusPanelView(networkStatus: viewModel.networkStatus)
-                    .padding(.horizontal)
-                
-                if viewModel.isScanning {
-                    VStack(spacing: 4) {
+        ZStack {
+            NavigationView {
+                VStack(spacing: 16) {
+                    StatusPanelView(networkStatus: viewModel.networkStatus)
+                        .padding(.horizontal)
+                    
+                    if viewModel.isScanning {
                         ProgressView(value: viewModel.scanProgress)
                             .progressViewStyle(LinearProgressViewStyle())
                             .tint(viewModel.networkStatus.color.swiftUIColor)
-                        
-                        Text("\(Int(viewModel.scanProgress * 100))%")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                            .padding(.horizontal)
                     }
-                    .padding(.horizontal)
-                }
-                
-                ScanButton(
-                    isScanning: viewModel.isScanning,
-                    canStart: viewModel.networkStatus.canStartScan,
-                    hasError: viewModel.networkStatus.hasError,
-                    action: {
-                        if viewModel.isScanning {
-                            viewModel.stopScanning()
-                        } else {
-                            viewModel.startScanning()
+                    
+                    ScanButton(
+                        isScanning: viewModel.isScanning,
+                        canStart: viewModel.networkStatus.canStartScan,
+                        hasError: viewModel.networkStatus.hasError,
+                        action: {
+                            if viewModel.isScanning {
+                                viewModel.stopScanning()
+                            } else {
+                                viewModel.startScanning()
+                            }
                         }
+                    )
+                    .padding(.horizontal)
+                    .disabled(!viewModel.networkStatus.canStartScan && !viewModel.isScanning)
+                    
+                    Picker("Тип устройств", selection: $viewModel.selectedTab) {
+                        Text("Bluetooth (\(viewModel.bluetoothDevices.count))")
+                            .tag(0)
+                        Text("LAN (\(viewModel.lanDevices.count))")
+                            .tag(1)
                     }
-                )
-                .padding(.horizontal)
-                .disabled(!viewModel.networkStatus.canStartScan && !viewModel.isScanning)
-                
-                Picker("Тип устройств", selection: $viewModel.selectedTab) {
-                    Text("Bluetooth (\(viewModel.bluetoothDevices.count))")
-                        .tag(0)
-                    Text("LAN (\(viewModel.lanDevices.count))")
-                        .tag(1)
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal)
+                    
+                    DeviceListView(
+                        devices: viewModel.selectedTab == 0 ?
+                        viewModel.bluetoothDevices.map { DeviceItem.bluetooth($0) } :
+                            viewModel.lanDevices.map { DeviceItem.lan($0) },
+                        networkStatus: viewModel.networkStatus
+                    )
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
-                
-                DeviceListView(
-                    devices: viewModel.selectedTab == 0 ?
-                    viewModel.bluetoothDevices.map { DeviceItem.bluetooth($0) } :
-                        viewModel.lanDevices.map { DeviceItem.lan($0) },
-                    networkStatus: viewModel.networkStatus
-                )
-            }
-            .navigationTitle("Сканер сети")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Очистить") {
-                        viewModel.bluetoothDevices.removeAll()
-                        viewModel.lanDevices.removeAll()
+                .navigationTitle("Сканер сети")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Очистить") {
+                            viewModel.bluetoothDevices.removeAll()
+                            viewModel.lanDevices.removeAll()
+                        }
+                        .disabled(viewModel.isScanning)
                     }
-                    .disabled(viewModel.isScanning)
+                }
+                .alert(isPresented: $viewModel.showingAlert) {
+                    Alert(
+                        title: Text("Информация"),
+                        message: Text(viewModel.alertMessage),
+                        dismissButton: .default(Text("OK"))
+                    )
                 }
             }
-            .alert(isPresented: $viewModel.showingAlert) {
-                Alert(
-                    title: Text("Информация"),
-                    message: Text(viewModel.alertMessage),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
-            .onAppear {
-                (viewModel.lanService as? ILANServiceProtocol)?.refreshNetworkInfo()
-            }
-            .onChange(of: appState.useMockServices) { newValue in
-                let factory = NetworkServicesFactory.shared
-                factory.mode = newValue ? .mock : .real
-                
-                DispatchQueue.main.async {
-                    viewModel.objectWillChange.send()
-                }
-            }
+            
+            ScanAnimationOverlay(isScanning: viewModel.showScanAnimation)
         }
     }
 }

@@ -32,7 +32,7 @@ final class ScanViewModel: ObservableObject {
     @Published var selectedTab = 0
     @Published var showingAlert = false
     @Published var alertMessage = ""
-    @Published var showingScanAnimation = false
+    @Published var showScanAnimation = false
     
     private var cancellables = Set<AnyCancellable>()
     private var scanStartTime: Date?
@@ -63,7 +63,7 @@ final class ScanViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isScanning in
                 self?.isScanning = isScanning
-                self?.showingScanAnimation = isScanning
+                self?.showScanAnimation = isScanning
             }
             .store(in: &cancellables)
         
@@ -187,7 +187,9 @@ extension ScanViewModel: IScanViewModel {
         bluetoothService.stopScan()
         lanService.stopScan()
         
-        showingScanAnimation = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.showScanAnimation = false
+        }
         
         showScanStatistics()
     }
