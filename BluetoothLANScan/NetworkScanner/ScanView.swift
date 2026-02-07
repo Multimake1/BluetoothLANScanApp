@@ -83,7 +83,7 @@ struct NetworkScannerView: View {
                 }
             }
             
-            ScanAnimationOverlay(isScanning: viewModel.showScanAnimation)
+            AdaptiveScanOverlay(isScanning: viewModel.showScanAnimation)
         }
     }
 }

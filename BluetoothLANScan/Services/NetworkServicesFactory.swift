@@ -24,7 +24,7 @@ enum ServiceMode {
 final class NetworkServicesFactory {
     static let shared = NetworkServicesFactory()
     
-    var mode: ServiceMode = .mock
+    var mode: ServiceMode = .real
     
     private init() {
         

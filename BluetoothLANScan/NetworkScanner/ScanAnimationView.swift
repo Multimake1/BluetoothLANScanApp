@@ -36,49 +36,45 @@ struct LottieAnimationView: UIViewRepresentable {
     }
 }
 
-struct ScanAnimationOverlay: View {
+struct AdaptiveScanOverlay: View {
     let isScanning: Bool
     
     var body: some View {
         if isScanning {
-            ZStack {
-                Color.black.opacity(0.5)
-                    .edgesIgnoringSafeArea(.all)
-                    .ignoresSafeArea()
-                
-                VStack(spacing: 20) {
-                    if Bundle.main.path(forResource: "scan", ofType: "json") != nil {
-                        LottieAnimationView(name: "scan", loopMode: .loop, animationSpeed: 1.5)
-                            .frame(width: 150, height: 150)
-                    } else {
+            Color.clear
+                .contentShape(Rectangle())
+                .allowsHitTesting(false)
+                .overlay(
+                    VStack {
+                        VStack(spacing: 12) {
+                            if Bundle.main.path(forResource: "scan", ofType: "json") != nil {
+                                LottieAnimationView(name: "scan", loopMode: .loop, animationSpeed: 1.5)
+                                    .frame(width: 60, height: 60)
+                            }
+                            
+                            Text("Сканирование активено")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        .background(
+                            Capsule()
+                                .fill(Color.blue.opacity(0.9))
+                                .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
+                        )
                         
+                        Spacer()
                     }
-                    
-                    VStack(spacing: 8) {
-                        Text("Идет сканирование...")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                        
-                        Text("Пожалуйста, подождите")
-                            .font(.subheadline)
-                            .foregroundColor(.white.opacity(0.8))
-                    }
-                    
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .scaleEffect(1.2)
-                }
-                .padding(30)
-                .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color(.systemGray6).opacity(0.95))
-                        .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
+                    .padding(.top, safeAreaTop + 10)
+                    .allowsHitTesting(false)
                 )
-                .padding(40)
-            }
-            .transition(.opacity)
-            .animation(.easeInOut(duration: 0.3), value: isScanning)
+                .ignoresSafeArea()
         }
+    }
+    
+    private var safeAreaTop: CGFloat {
+        UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0
     }
 }
