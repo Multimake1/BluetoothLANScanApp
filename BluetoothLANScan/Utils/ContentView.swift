@@ -9,28 +9,37 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
+    @State private var showLaunchScreen = true
     
     var body: some View {
-        TabView {
-            NetworkScannerView()
-                .tabItem {
-                    Label("Сканирование", systemImage: "magnifyingglass")
-                }
-            
-            ScanHistoryView()
-                .tabItem {
-                    Label("История", systemImage: "clock")
-                }
-        }
-        .alert(
-            "Разрешения",
-            isPresented: $appState.showNetworkPermissionAlert
-        ) {
-            Button("OK") {
-                self.appState.isNetworkAuthorized = true
+        ZStack {
+            TabView {
+                NetworkScannerView()
+                    .tabItem {
+                        Label("Сканирование", systemImage: "magnifyingglass")
+                    }
+                
+                ScanHistoryView()
+                    .tabItem {
+                        Label("История", systemImage: "clock")
+                    }
             }
-        } message: {
-            Text("Для работы сканера требуется доступ к локальной сети. Пожалуйста, предоставьте разрешение в настройках.")
+            .alert(
+                "Разрешения",
+                isPresented: $appState.showNetworkPermissionAlert
+            ) {
+                Button("OK") {
+                    self.appState.isNetworkAuthorized = true
+                }
+            } message: {
+                Text("Для работы сканера требуется доступ к локальной сети. Пожалуйста, предоставьте разрешение в настройках.")
+            }
+            
+            if showLaunchScreen {
+                LaunchScreenView(isPresented: $showLaunchScreen)
+                    .transition(.opacity)
+                    .zIndex(1)
+            }
         }
     }
 }
