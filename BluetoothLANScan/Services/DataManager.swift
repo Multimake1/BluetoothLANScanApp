@@ -19,7 +19,6 @@ protocol IDataManager {
     func fetchLANDevices(scan: ScanHistory) -> [LANDeviceHistory]
     func deleteScan(scan: ScanHistory)
     func deleteAllScans()
-    func getStatistics() -> ScanStatistics
 }
 
 final class DataManager {
@@ -62,6 +61,18 @@ final class DataManager {
         } catch {
             let nsError = error as NSError
             print("Ошибка сохранения CoreData: \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
+    private func deleteRelatedDevices(for scan: ScanHistory) {
+        let bluetoothDevices = fetchBluetoothDevices(scan: scan)
+        for device in bluetoothDevices {
+            viewContext.delete(device)
+        }
+        
+        let lanDevices = fetchLANDevices(scan: scan)
+        for device in lanDevices {
+            viewContext.delete(device)
         }
     }
 }
@@ -154,8 +165,13 @@ extension DataManager: IDataManager {
     }
     
     func deleteScan(scan: ScanHistory) {
-        viewContext.delete(scan)
-        saveContext()
+        if let objectInContext = viewContext.object(with: scan.objectID) as? ScanHistory {
+            deleteRelatedDevices(for: objectInContext)
+            viewContext.delete(objectInContext)
+            saveContext()
+        } else {
+            return
+        }
     }
     
     func deleteAllScans() {
@@ -169,65 +185,8 @@ extension DataManager: IDataManager {
             print("Ошибка удаления истории сканирований: \(error)")
         }
     }
-    
-    func getStatistics() -> ScanStatistics {
-        let fetchRequest: NSFetchRequest<ScanHistory> = ScanHistory.fetchRequest()
-        
-        do {
-            let allScans = try viewContext.fetch(fetchRequest)
-            
-            var totalScans = 0
-            var totalDevices = 0
-            var totalBluetoothDevices = 0
-            var totalLANDevices = 0
-            var totalDuration: TimeInterval = 0
-            
-            for scan in allScans {
-                totalScans += 1
-                totalDevices += Int(scan.totalDevices)
-                totalBluetoothDevices += Int(scan.bluetoothCount)
-                totalLANDevices += Int(scan.lanCount)
-                totalDuration += scan.duration
-            }
-            
-            return ScanStatistics(
-                totalScans: totalScans,
-                totalDevices: totalDevices,
-                totalBluetoothDevices: totalBluetoothDevices,
-                totalLANDevices: totalLANDevices,
-                averageDuration: totalScans > 0 ? totalDuration / Double(totalScans) : 0,
-                lastScanDate: allScans.first?.timestamp
-            )
-        } catch {
-            print("Ошибка получения статистики: \(error)")
-            return ScanStatistics()
-        }
-    }
 }
 
 extension Notification.Name {
     static let scanHistoryUpdated = Notification.Name("scanHistoryUpdated")
-}
-
-struct ScanStatistics {
-    let totalScans: Int
-    let totalDevices: Int
-    let totalBluetoothDevices: Int
-    let totalLANDevices: Int
-    let averageDuration: TimeInterval
-    let lastScanDate: Date?
-    
-    init(totalScans: Int = 0,
-         totalDevices: Int = 0,
-         totalBluetoothDevices: Int = 0,
-         totalLANDevices: Int = 0,
-         averageDuration: TimeInterval = 0,
-         lastScanDate: Date? = nil) {
-        self.totalScans = totalScans
-        self.totalDevices = totalDevices
-        self.totalBluetoothDevices = totalBluetoothDevices
-        self.totalLANDevices = totalLANDevices
-        self.averageDuration = averageDuration
-        self.lastScanDate = lastScanDate
-    }
 }

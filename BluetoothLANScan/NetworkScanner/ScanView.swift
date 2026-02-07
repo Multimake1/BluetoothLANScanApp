@@ -11,11 +11,9 @@ import Combine
 struct NetworkScannerView: View {
     @StateObject private var viewModel: ScanViewModel
     @EnvironmentObject var appState: AppState
-    //@State private var showingDebugInfo = false
     
     init() {
         let factory = NetworkServicesFactory.shared
-        //factory.mode = .mock
         
         _viewModel = StateObject(wrappedValue: factory.createScanViewModel())
     }
@@ -23,30 +21,6 @@ struct NetworkScannerView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 16) {
-                /*if showingDebugInfo {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Отладочная информация:")
-                            .font(.caption)
-                            .bold()
-                        
-                        Text("Режим: \(appState.useMockServices ? "Тестовый" : "Реальный")")
-                            .font(.caption2)
-                        
-                        Text("Bluetooth устройств: \(viewModel.bluetoothDevices.count)")
-                            .font(.caption2)
-                        
-                        Text("LAN устройств: \(viewModel.lanDevices.count)")
-                            .font(.caption2)
-                        
-                        Text("Прогресс: \(Int(viewModel.scanProgress * 100))%")
-                            .font(.caption2)
-                    }
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(8)
-                    .padding(.horizontal)
-                }*/
-                
                 StatusPanelView(networkStatus: viewModel.networkStatus)
                     .padding(.horizontal)
                 
@@ -97,14 +71,6 @@ struct NetworkScannerView: View {
             .navigationTitle("Сканер сети")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                /*ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        showingDebugInfo.toggle()
-                    } label: {
-                        Image(systemName: showingDebugInfo ? "info.circle.fill" : "info.circle")
-                    }
-                }*/
-                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Очистить") {
                         viewModel.bluetoothDevices.removeAll()
@@ -328,7 +294,7 @@ struct EmptyStateView: View {
         }
     }
 }
-#Preview {
+/*#Preview {
     NetworkScannerView()
 }
 
@@ -348,5 +314,5 @@ struct EmptyStateView: View {
         }
     }
     return PreviewView()
-}
+}*/
 

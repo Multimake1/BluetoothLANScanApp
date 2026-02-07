@@ -201,11 +201,6 @@ extension LANService: ILANServiceProtocol {
         resetScanState()
         refreshNetworkInfo()
         
-        /*guard validateWiFiConnection() else {
-            networkStatus = .error(.wifiNotConnected)
-            return
-        }*/
-        
         networkStatus = .preparing
         isScanning = true
         scanStartTime = Date()
