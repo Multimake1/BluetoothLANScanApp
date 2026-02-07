@@ -64,45 +64,42 @@ struct ScanDetailView: View {
             .padding()
             .background(Color(.systemGray6))
             
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(.gray)
-                    .padding(.leading, 12)
-                
-                TextField("Поиск устройств...", text: $searchText)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding(.vertical, 10)
-                
-                if !searchText.isEmpty {
-                    Button(action: {
-                        searchText = ""
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.trailing, 12)
-                }
-            }
-            .background(Color(.systemGray6))
-            .cornerRadius(10)
-            .padding(.horizontal)
-            .padding(.top, 12)
-            
             Picker("Тип устройств", selection: $selectedTab) {
-                Text("Bluetooth (\(filteredBluetoothDevices.count))")
+                Text("Bluetooth (\(scan.bluetoothCount))")
                     .tag(0)
-                Text("Сеть (\(filteredLANDevices.count))")
+                Text("Сеть (\(scan.lanCount))")
                     .tag(1)
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal)
             
-            DeviceHistoryDetailListView(
-                selectedTab: selectedTab,
-                bluetoothDevices: filteredBluetoothDevices,
-                lanDevices: filteredLANDevices,
-                searchText: searchText
-            )
+            if selectedTab == 0 {
+                if bluetoothDevices.isEmpty {
+                    Text("Bluetooth устройства не найдены")
+                        .foregroundColor(.secondary)
+                        .padding()
+                } else {
+                    List(bluetoothDevices) { device in
+                        NavigationLink(destination: DeviceDetailView(device: .bluetooth(convertToBluetoothDevice(device)))) {
+                            BluetoothDeviceRow(device: device)
+                        }
+                    }
+                    .listStyle(PlainListStyle())
+                }
+            } else {
+                if lanDevices.isEmpty {
+                    Text("Сетевые устройства не найдены")
+                        .foregroundColor(.secondary)
+                        .padding()
+                } else {
+                    List(lanDevices) { device in
+                        NavigationLink(destination: DeviceDetailView(device: .lan(convertToLANDevice(device)))) {
+                            LANDeviceRow(device: device)
+                        }
+                    }
+                    .listStyle(PlainListStyle())
+                }
+            }
             
             Spacer()
         }
@@ -123,6 +120,28 @@ struct ScanDetailView: View {
         formatter.dateStyle = .long
         formatter.timeStyle = .short
         return formatter.string(from: date)
+    }
+    
+    private func convertToBluetoothDevice(_ history: BluetoothDeviceHistory) -> BluetoothDevice {
+        BluetoothDevice(
+            id: history.id ?? UUID(),
+            peripheralUUID: UUID(),
+            name: history.name,
+            rssi: Int(history.rssi),
+            status: .disconnected,
+            lastSeen: history.timestamp ?? Date()
+        )
+    }
+        
+    private func convertToLANDevice(_ history: LANDeviceHistory) -> LANDevice {
+        LANDevice(
+            id: history.id ?? UUID(),
+            ipAddress: history.ipAddress ?? "0.0.0.0",
+            macAddress: history.macAddress,
+            hostname: history.hostname,
+            vendor: history.vendor,
+            lastSeen: history.timestamp ?? Date()
+        )
     }
 }
 

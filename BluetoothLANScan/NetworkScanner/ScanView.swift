@@ -63,7 +63,7 @@ struct NetworkScannerView: View {
                 
                 DeviceListView(
                     devices: viewModel.selectedTab == 0 ?
-                        viewModel.bluetoothDevices.map { DeviceItem.bluetooth($0) } :
+                    viewModel.bluetoothDevices.map { DeviceItem.bluetooth($0) } :
                         viewModel.lanDevices.map { DeviceItem.lan($0) },
                     networkStatus: viewModel.networkStatus
                 )
@@ -204,28 +204,30 @@ struct DeviceListView: View {
 
 struct DeviceRow: View {
     let device: DeviceItem
-    
+        
     var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: deviceIconName)
-                .font(.title3)
-                .foregroundColor(deviceIconColor)
-                .frame(width: 30)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(device.displayName)
-                    .font(.headline)
-                    .lineLimit(1)
+        NavigationLink(destination: DeviceDetailView(device: device)) {
+            HStack(spacing: 12) {
+                Image(systemName: deviceIconName)
+                    .font(.title3)
+                    .foregroundColor(deviceIconColor)
+                    .frame(width: 30)
                 
-                Text(device.details)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(device.displayName)
+                        .font(.headline)
+                        .lineLimit(1)
+                    
+                    Text(device.details)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
             }
-            
-            Spacer()
+            .padding(.vertical, 4)
+            .contentShape(Rectangle())
         }
-        .padding(.vertical, 4)
-        .contentShape(Rectangle())
     }
     
     private var deviceIconName: String {
@@ -294,25 +296,3 @@ struct EmptyStateView: View {
         }
     }
 }
-/*#Preview {
-    NetworkScannerView()
-}
-
-#Preview("Ошибка Bluetooth") {
-    struct PreviewView: View {
-        @StateObject private var viewModel: ScanViewModel
-        
-        init() {
-            let factory = NetworkServicesFactory.shared
-            let vm = factory.createScanViewModel()
-            vm.networkStatus = .error(.bluetoothDisabled)
-            _viewModel = StateObject(wrappedValue: vm)
-        }
-        
-        var body: some View {
-            NetworkScannerView()
-        }
-    }
-    return PreviewView()
-}*/
-
