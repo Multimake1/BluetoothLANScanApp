@@ -6,13 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7C97079B2F33EE4000586EBF /* LanScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 7C97079A2F33EE4000586EBF /* LanScanner */; };
+		7C9707D22F374BEC00586EBF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 7C9707D12F374BEC00586EBF /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		7C9707672F33406200586EBF /* BluetoothLANScan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluetoothLANScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7C9707A62F35EB9400586EBF /* Exceptions for "BluetoothLANScan" folder in "BluetoothLANScan" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7C9707662F33406200586EBF /* BluetoothLANScan */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7C9707692F33406200586EBF /* BluetoothLANScan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7C9707A62F35EB9400586EBF /* Exceptions for "BluetoothLANScan" folder in "BluetoothLANScan" target */,
+			);
 			path = BluetoothLANScan;
 			sourceTree = "<group>";
 		};
@@ -23,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C97079B2F33EE4000586EBF /* LanScanner in Frameworks */,
+				7C9707D22F374BEC00586EBF /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +85,8 @@
 			);
 			name = BluetoothLANScan;
 			packageProductDependencies = (
+				7C97079A2F33EE4000586EBF /* LanScanner */,
+				7C9707D12F374BEC00586EBF /* Lottie */,
 			);
 			productName = BluetoothLANScan;
 			productReference = 7C9707672F33406200586EBF /* BluetoothLANScan.app */;
@@ -94,6 +116,10 @@
 			);
 			mainGroup = 7C97075E2F33406200586EBF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7C9707992F33EE4000586EBF /* XCRemoteSwiftPackageReference "lan-scanner" */,
+				7C9707D02F374BEC00586EBF /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7C9707682F33406200586EBF /* Products */;
 			projectDirPath = "";
@@ -249,15 +275,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BluetoothLANScan/BluetoothLANScan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BluetoothLANScan/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Приложение ищет Bluetooth-устройства";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Приложение сканирует устройства в вашей Wi-Fi сети";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -280,15 +311,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BluetoothLANScan/BluetoothLANScan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BluetoothLANScan/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Приложение ищет Bluetooth-устройства";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Приложение сканирует устройства в вашей Wi-Fi сети";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,6 +364,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7C9707992F33EE4000586EBF /* XCRemoteSwiftPackageReference "lan-scanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MaatheusGois/lan-scanner";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+		7C9707D02F374BEC00586EBF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7C97079A2F33EE4000586EBF /* LanScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C9707992F33EE4000586EBF /* XCRemoteSwiftPackageReference "lan-scanner" */;
+			productName = LanScanner;
+		};
+		7C9707D12F374BEC00586EBF /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C9707D02F374BEC00586EBF /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7C97075F2F33406200586EBF /* Project object */;
 }

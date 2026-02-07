@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="25C56" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="BluetoothDeviceHistory" representedClassName="BluetoothDeviceHistory" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="macAddress" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="rssi" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="scan" maxCount="1" deletionRule="Cascade" destinationEntity="ScanHistory" inverseName="bluetoothDevices" inverseEntity="ScanHistory"/>
+    </entity>
+    <entity name="LANDeviceHistory" representedClassName="LANDeviceHistory" syncable="YES" codeGenerationType="class">
+        <attribute name="hostname" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="ipAddress" attributeType="String"/>
+        <attribute name="macAddress" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="vendor" optional="YES" attributeType="String"/>
+        <relationship name="scan" maxCount="1" deletionRule="Cascade" destinationEntity="ScanHistory" inverseName="lanDevices" inverseEntity="ScanHistory"/>
+    </entity>
+    <entity name="ScanHistory" representedClassName="ScanHistory" syncable="YES" codeGenerationType="class">
+        <attribute name="bluetoothCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="duration" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lanCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="totalDevices" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="bluetoothDevices" toMany="YES" deletionRule="Nullify" destinationEntity="BluetoothDeviceHistory" inverseName="scan" inverseEntity="BluetoothDeviceHistory"/>
+        <relationship name="lanDevices" toMany="YES" deletionRule="Nullify" destinationEntity="LANDeviceHistory" inverseName="scan" inverseEntity="LANDeviceHistory"/>
+    </entity>
+</model>
