@@ -62,9 +62,9 @@ final class LANService: NSObject {
         return true
     }
     
-    // Таймер на 15 секунд для автоматической остановки
+    // Таймер на 60 секунд для автоматической остановки
     private func startSafetyTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: false) { [weak self] _ in
             DispatchQueue.main.async {
                 self?.handleScanTimeout()
             }
@@ -201,10 +201,10 @@ extension LANService: ILANServiceProtocol {
         resetScanState()
         refreshNetworkInfo()
         
-        guard validateWiFiConnection() else {
+        /*guard validateWiFiConnection() else {
             networkStatus = .error(.wifiNotConnected)
             return
-        }
+        }*/
         
         networkStatus = .preparing
         isScanning = true

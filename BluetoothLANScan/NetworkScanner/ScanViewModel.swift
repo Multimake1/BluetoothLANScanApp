@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreData
 
 protocol IScanViewModel {
     func startScanning()
@@ -35,6 +36,7 @@ final class ScanViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     private var scanStartTime: Date?
+    private let dataManager = DataManager.shared
     
     init(bluetoothService: IBluetoothServiceProtocol,
          lanService: ILANServiceProtocol,
@@ -84,6 +86,21 @@ final class ScanViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (btStatus, lanStatus) in
                 self?.updateCombinedNetworkStatus(bluetoothStatus: btStatus, lanStatus: lanStatus)
+                
+                if case .completed(let btResult) = btStatus,
+                   case .completed(let lanResult) = lanStatus {
+                    
+                    let totalDevices = btResult.foundDevices + lanResult.foundDevices
+                    let totalDuration = max(btResult.duration, lanResult.duration)
+                    
+                    let combinedResult = NetworkStatus.ScanResult(
+                        deviceCount: btResult.deviceCount + lanResult.deviceCount,
+                        duration: totalDuration,
+                        foundDevices: totalDevices
+                    )
+                    
+                    self?.saveScanToHistory(result: combinedResult)
+                }
             }
             .store(in: &cancellables)
     }
@@ -135,6 +152,14 @@ final class ScanViewModel: ObservableObject {
     private func showAlert(message: String) {
         alertMessage = message
         showingAlert = true
+    }
+    
+    private func saveScanToHistory(result: NetworkStatus.ScanResult) {
+        dataManager.saveScan(
+            scanResult: result,
+            bluetoothDevices: bluetoothDevices,
+            lanDevices: lanDevices
+        )
     }
 }
 

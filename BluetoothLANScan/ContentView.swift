@@ -22,16 +22,17 @@ struct ContentView: View {
                     Label("История", systemImage: "clock")
                 }
             
-            SettingsView()
+            /*SettingsView()
                 .tabItem {
                     Label("Настройки", systemImage: "gear")
-                }
+                }*/
         }
         .alert(
             "Разрешения",
             isPresented: $appState.showNetworkPermissionAlert
         ) {
             Button("OK") {
+                self.appState.isNetworkAuthorized = true
             }
         } message: {
             Text("Для работы сканера требуется доступ к локальной сети. Пожалуйста, предоставьте разрешение в настройках.")
@@ -39,30 +40,7 @@ struct ContentView: View {
     }
 }
 
-struct ScanHistoryView: View {
-    @EnvironmentObject var appState: AppState
-    
-    var body: some View {
-        NavigationView {
-            VStack {
-                if let lastScan = appState.lastScanDate {
-                    Text("Последнее сканирование: \(lastScan.formatted())")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                
-                Text("Всего найдено устройств: \(appState.totalDevicesFound)")
-                    .font(.headline)
-                    .padding()
-                
-                Spacer()
-            }
-            .navigationTitle("История")
-        }
-    }
-}
-
-struct SettingsView: View {
+/*struct SettingsView: View {
     @EnvironmentObject var appState: AppState
     
     var body: some View {
@@ -99,7 +77,7 @@ struct SettingsView: View {
             .navigationTitle("Настройки")
         }
     }
-}
+}*/
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
@@ -112,7 +90,7 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct StatusInfoRow: View {
+/*struct StatusInfoRow: View {
     @EnvironmentObject var appState: AppState
     
     var body: some View {
@@ -123,4 +101,4 @@ struct StatusInfoRow: View {
             Spacer()
         }
     }
-}
+}*/

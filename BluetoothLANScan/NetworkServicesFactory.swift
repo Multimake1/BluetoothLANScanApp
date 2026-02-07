@@ -33,6 +33,14 @@ final class NetworkServicesFactory {
 
 extension NetworkServicesFactory: INetworkServicesFactory {
     func createBluetoothService() -> (service: IBluetoothServiceProtocol, publishers: BluetoothPublishers) {
+        /*let service = BluetoothService()
+        let publishers = BluetoothPublishers(
+            discoveredDevices: service.$discoveredDevices.eraseToAnyPublisher(),
+            isScanning: service.$isScanning.eraseToAnyPublisher(),
+            scanProgress: service.$scanProgress.eraseToAnyPublisher(),
+            networkStatus: service.$networkStatus.eraseToAnyPublisher()
+        )
+        return (service, publishers)*/
         switch mode {
         case .real:
             let service = BluetoothService()
@@ -57,6 +65,14 @@ extension NetworkServicesFactory: INetworkServicesFactory {
     }
     
     func createLANService() -> (service: ILANServiceProtocol, publishers: LANPublishers) {
+        /*let service = LANService()
+        let publishers = LANPublishers(
+            discoveredDevices: service.$discoveredDevices.eraseToAnyPublisher(),
+            isScanning: service.$isScanning.eraseToAnyPublisher(),
+            scanProgress: service.$scanProgress.eraseToAnyPublisher(),
+            networkStatus: service.$networkStatus.eraseToAnyPublisher()
+        )
+        return (service, publishers)*/
         switch mode {
         case .real:
             let service = LANService()

@@ -17,7 +17,6 @@ struct NetworkScannerApp: App {
                 .environmentObject(appState)
                 .onAppear {
                     setupAppearance()
-                    print("Приложение запущено в режиме: \(appState.useMockServices ? "Тестовый" : "Реальный")")
                 }
         }
     }

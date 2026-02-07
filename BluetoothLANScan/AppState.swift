@@ -18,11 +18,11 @@ final class AppState: ObservableObject {
     
     @Published var useMockServices = true {
         didSet {
-            NetworkServicesFactory.shared.mode = useMockServices ? .mock : .real
+            NetworkServicesFactory.shared.mode = .mock //если менять, то и в NetworkServiceFactory
         }
     }
         
-    init() {
-        NetworkServicesFactory.shared.mode = useMockServices ? .mock : .real
-    }
+    /*init() {
+        NetworkServicesFactory.shared.mode = .real
+    }*/
 }
